@@ -1,0 +1,29 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.nav {
+  display: flex;
+  padding: 1rem;
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+.nav .item {
+  color: #000;
+  text-decoration: none;
+}
+
+.nav .item:hover {
+  text-decoration: underline;
+}
+
+.nav .item.active {
+  color: blue;
+}
+
+.nav .item + .item {
+  margin-left: 1rem;
+}

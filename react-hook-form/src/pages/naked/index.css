@@ -1,0 +1,45 @@
+.form {
+  max-width: 300px;
+}
+
+.form h1 {
+  font-weight: 500;
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.form p {
+  margin-bottom: 1rem;
+}
+
+.group {
+  margin-bottom: 1rem;
+}
+
+.group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.group input,
+.group select {
+  width: 100%;
+  border-radius: 4px;
+  padding: 0.5rem;
+  border: 2px solid #bbb;
+}
+
+.group select {
+  height: 37px;
+  background-color: #fff;
+}
+
+.group.error input,
+.group.error select {
+  border-color: red !important;
+}
+
+.group.error label,
+.group.error span {
+  color: red;
+}
