@@ -23,6 +23,7 @@ const SignupForm = (): JSX.Element => {
       alert(JSON.stringify(values, null, 2));
     },
   });
+
   const callback = (
     id: string,
     phase: "mount" | "update",
