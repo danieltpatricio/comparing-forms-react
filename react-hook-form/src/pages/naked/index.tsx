@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, Profiler } from "react";
 import { useForm } from "react-hook-form";
 import { useRendersCount } from "react-use";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,6 +9,12 @@ import "./index.css";
 
 export function NakedForm() {
   const { handleSubmit, register, errors } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      gender: "",
+      budget: 0,
+    },
     resolver: yupResolver(ValidationSchema),
   });
   const [data, setData] = useState<Record<string, any>>({});
@@ -19,8 +25,24 @@ export function NakedForm() {
     setData(data);
   });
 
+  const profilerCallback = useCallback(
+    (
+      id: string,
+      phase: "mount" | "update",
+      actualDuration: number,
+      baseDuration: number,
+      startTime: number,
+      commitTime: number
+    ) => {
+      console.table([
+        { id, phase, actualDuration, baseDuration, startTime, commitTime },
+      ]);
+    },
+    []
+  );
+
   return (
-    <>
+    <Profiler id="RFH-NakedForm" onRender={profilerCallback}>
       <form noValidate className="form" onSubmit={submitHandler}>
         <h1>Naked example</h1>
         <p className="count">Render count: {count}</p>
@@ -61,6 +83,6 @@ export function NakedForm() {
         <button type="reset">Clear</button>{" "}
         <button type="submit">Submit</button>
       </form>
-    </>
+    </Profiler>
   );
 }

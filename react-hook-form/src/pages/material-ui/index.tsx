@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, Profiler } from "react";
 import {
   TextField,
   Typography,
@@ -21,6 +21,12 @@ const useStyles = makeStyles({
 
 export function MaterialForm() {
   const { handleSubmit, register, control, errors, reset } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      gender: "",
+      budget: 0,
+    },
     resolver: yupResolver(ValidationSchema),
   });
   const [data, setData] = useState<Record<string, any>>({});
@@ -32,8 +38,24 @@ export function MaterialForm() {
     setData(data);
   });
 
+  const profilerCallback = useCallback(
+    (
+      id: string,
+      phase: "mount" | "update",
+      actualDuration: number,
+      baseDuration: number,
+      startTime: number,
+      commitTime: number
+    ) => {
+      console.table([
+        { id, phase, actualDuration, baseDuration, startTime, commitTime },
+      ]);
+    },
+    []
+  );
+
   return (
-    <>
+    <Profiler id="RFH-MaterialForm" onRender={profilerCallback}>
       <form noValidate className={classes.form} onSubmit={submitHandler}>
         <Typography variant="h4">Material example</Typography>
         <Typography variant="overline" color="primary">
@@ -49,7 +71,7 @@ export function MaterialForm() {
           variant="outlined"
           fullWidth
           inputRef={register}
-          error={errors?.name}
+          error={!!errors?.name}
           helperText={errors?.name?.message}
         />
         <TextField
@@ -61,7 +83,7 @@ export function MaterialForm() {
           variant="outlined"
           fullWidth
           inputRef={register}
-          error={errors?.email}
+          error={!!errors?.email}
           helperText={errors?.email?.message}
         />
         <Controller
@@ -77,7 +99,7 @@ export function MaterialForm() {
               variant="outlined"
               fullWidth
               select
-              error={errors?.gender}
+              error={!!errors?.gender}
               helperText={errors?.gender?.message}
               {...props}
             >
@@ -100,7 +122,7 @@ export function MaterialForm() {
         </Typography>
         <Button onClick={() => reset()} color="primary" type="reset">
           Clear
-        </Button>
+        </Button>{" "}
         <Button
           variant="contained"
           disableElevation
@@ -110,6 +132,6 @@ export function MaterialForm() {
           Submit
         </Button>
       </form>
-    </>
+    </Profiler>
   );
 }
